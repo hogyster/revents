@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "semantic-ui-css/semantic.min.css";
 // react is in separate libraries- react dom as this is web app
 import "./index.css";
 import App from "./app/layout/App";

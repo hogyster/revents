@@ -66,7 +66,7 @@ class EventDashboard extends Component {
 
   // this.handleFormOpen = this.handleFormOpen.bind(this);
   // this.handleCancel = this.handleCancel.bind(this);
-  // but this is ugly binding it to constructor, these are boilerplatesq
+  // but this is ugly binding it to constructor, these are boilerplatesq, these are inverse data flow(add and closing form)
 
   handleFormOpen = () => {
     this.setState({

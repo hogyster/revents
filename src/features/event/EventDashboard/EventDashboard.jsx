@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Grid, Button } from "semantic-ui-react";
 import EventList from "../EventList/EventList";
 import EventForm from "../EventForm/EventForm";
-
+import cuid from "cuid";
 const eventsDashboard = [
   {
     id: "1",
@@ -80,6 +80,18 @@ class EventDashboard extends Component {
     });
   };
 
+  handleCreateEvent = newEvent => {
+    newEvent.id = cuid();
+    newEvent.hostPhotoURL = "/assets/user.png";
+    const updatedEvents = [...this.state.events, newEvent];
+    this.setState({
+      events: updatedEvents,
+      isOpen: false
+    });
+  };
+  // now pass this method/func down to our event form, so when submit this form we can call this method and update our state inside our dashboard
+  // cuid to generate particular id b4 firestore-randomly generate id
+  // spreadoperator- take all of our events array in our state and spread them out
   render() {
     return (
       <Grid>
@@ -92,7 +104,12 @@ class EventDashboard extends Component {
             positive
             content="Create Event"
           />
-          {this.state.isOpen && <EventForm handleCancel={this.handleCancel} />}
+          {this.state.isOpen && (
+            <EventForm
+              createEvent={this.handleCreateEvent}
+              handleCancel={this.handleCancel}
+            />
+          )}
         </Grid.Column>
       </Grid>
     );

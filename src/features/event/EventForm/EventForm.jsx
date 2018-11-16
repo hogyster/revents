@@ -1,20 +1,44 @@
 import React, { Component } from "react";
 import { Segment, Form, Button } from "semantic-ui-react";
 
+const emptyEvent = {
+  title: "",
+  date: "",
+  city: "",
+  venue: "",
+  hostedBy: ""
+};
+
 class EventForm extends Component {
   state = {
-    event: {
-      title: "",
-      date: "",
-      city: "",
-      venue: "",
-      hostedBy: ""
-    }
+    event: emptyEvent
   };
   // forms special case- resp for tracking their own state
+  // If there is state passed in, trigger re-rendering, didmouunt life-cycle- event form already mounted so will not call again if properties changed, to effect that need to use another react cycle event comp will receive props, change/create event in clicking diff buttons
+  componentDidMount() {
+    if (this.props.selectedEvent !== null) {
+      this.setState({
+        event: this.props.selectedEvent
+      });
+    }
+  }
+  // will be received after mount, access to next and existing props
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedEvent !== this.props.selectedEvent) {
+      this.setState({
+        event: nextProps.selectedEvent || emptyEvent
+      });
+    }
+  }
+
+  // change an event is passed in when we select one
   onFormSubmit = evt => {
     evt.preventDefault();
-    this.props.createEvent(this.state.event);
+    if (this.state.event.id) {
+      this.props.upadateEvent(this.state.event);
+    } else {
+      this.props.createEvent(this.state.event);
+    }
   };
   // preventdef- to prevent actually submitting any data, refs is a property in our component class
 

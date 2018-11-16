@@ -7,7 +7,7 @@ const eventsDashboard = [
   {
     id: "1",
     title: "Trip to Tower of London",
-    date: "2018-03-27T11:00:00+00:00",
+    date: "2018-03-27",
     category: "culture",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
@@ -31,7 +31,7 @@ const eventsDashboard = [
   {
     id: "2",
     title: "Trip to Punch and Judy Pub",
-    date: "2018-03-28T14:00:00+00:00",
+    date: "2018-03-28",
     category: "drinks",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.",
@@ -61,7 +61,8 @@ class EventDashboard extends Component {
   // this.
   state = {
     events: eventsDashboard,
-    isOpen: false
+    isOpen: false,
+    selectedEvent: null
   };
 
   // this.handleFormOpen = this.handleFormOpen.bind(this);
@@ -70,6 +71,7 @@ class EventDashboard extends Component {
 
   handleFormOpen = () => {
     this.setState({
+      selectedEvent: null,
       isOpen: true
     });
   };
@@ -79,6 +81,27 @@ class EventDashboard extends Component {
       isOpen: false
     });
   };
+  handleUpdateEvent = updatedEvent => {
+    this.setState({
+      events: this.state.events.map(event => {
+        if (event.id === updatedEvent.id) {
+          return Object.assign({}, updatedEvent);
+        } else {
+          return event;
+        }
+      }),
+      isOpen: false,
+      selectedEvent: null
+    });
+  };
+  // we copy our updated event into an empty object, is then assigned to what we're replacing with, not mutating state but taking clone of our updating event and copy, replacing the existing
+  handleOpenEvent = eventToOpen => () => {
+    this.setState({
+      selectedEvent: eventToOpen,
+      isOpen: true
+    });
+  };
+  // if handleFormOpen is selected, reset handleEditEvent: selectedEvent to null, so we can use the create form and start the empty event and when we select from the list item we select the event that we want to show
 
   handleCreateEvent = newEvent => {
     newEvent.id = cuid();
@@ -92,11 +115,24 @@ class EventDashboard extends Component {
   // now pass this method/func down to our event form, so when submit this form we can call this method and update our state inside our dashboard
   // cuid to generate particular id b4 firestore-randomly generate id
   // spreadoperator- take all of our events array in our state and spread them out
+  handleDeleteEvent = eventId => () => {
+    const updatedEvents = this.state.events.filter(e => e.id !== eventId);
+    this.setState({
+      events: updatedEvents
+    });
+  };
+  // array filter method to remove the event we want to delete but create new array based on the remaining event, pass in id; if its not equalt to event id will return a new array with all the events with the id event and store that in updated events
   render() {
+    const { selectedEvent } = this.state;
+
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList events={this.state.events} />
+          <EventList
+            deleteEvent={this.handleDeleteEvent}
+            onEventOpen={this.handleOpenEvent}
+            events={this.state.events}
+          />
         </Grid.Column>
         <Grid.Column width={6}>
           <Button
@@ -106,6 +142,8 @@ class EventDashboard extends Component {
           />
           {this.state.isOpen && (
             <EventForm
+              upadateEvent={this.handleUpdatedEvent}
+              selectedEvent={selectedEvent}
               createEvent={this.handleCreateEvent}
               handleCancel={this.handleCancel}
             />

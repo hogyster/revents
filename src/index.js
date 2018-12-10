@@ -1,19 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 import "semantic-ui-css/semantic.min.css";
 // react is in separate libraries- react dom as this is web app
 import "./index.css";
 import App from "./app/layout/App";
 import * as serviceWorker from "./serviceWorker";
+import { configureStore } from "./app/store/configureStore";
+//brring in configureStore method
+
+const store = configureStore();
 
 const rootEl = document.getElementById("root");
-
+// pass store as property to provider
 let render = () => {
   ReactDOM.render(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>,
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>,
+
     rootEl
   );
 };

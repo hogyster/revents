@@ -9,7 +9,7 @@ import UserDetailedPage from "../../features/user/UserDetailed/UserDetailedPage"
 import PeopleDashboard from "../../features/user/PeopleDashboard/PeopleDashboard";
 import EventDetailedPage from "../../features/event/EventDetailed/EventDetailedPage";
 import HomePage from "../../features/home/HomePage";
-
+import TestComponent from "../../features/testarea/TestComponent";
 // our component is javascript class that extends from react component and our component require single method called render, which then returns look like html rendered on the page (which is javascript, the jsx) similar to html but get compiled to javascript and injected to our html page. we use web packs behind the scenes, hot module replacement- make changes to our code and reflected on the page without refreshing.
 
 class App extends Component {
@@ -28,6 +28,7 @@ class App extends Component {
               <Container className="main">
                 <Switch>
                   <Route path="/events" component={EventDashboard} />
+                  <Route path="/test" component={TestComponent} />
                   <Route path="/event/:id" component={EventDetailedPage} />
                   <Route path="/people" component={PeopleDashboard} />
                   <Route path="/profile/:id" component={UserDetailedPage} />

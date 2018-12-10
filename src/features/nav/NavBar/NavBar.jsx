@@ -37,6 +37,7 @@ class NavBar extends Component {
           </Menu.Item>
           {/* this means that this menu as= item is now NavLink so any properties that is passed to the navlink, we can pass in here and added to this particular component*/}
           <Menu.Item as={NavLink} to="/events" name="Events" />
+          <Menu.Item as={NavLink} to="/test" name="Test" />
           {authenticated && (
             <Menu.Item as={NavLink} to="/people" name="People" />
           )}

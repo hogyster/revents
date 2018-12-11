@@ -9,6 +9,7 @@ import App from "./app/layout/App";
 import * as serviceWorker from "./serviceWorker";
 import { configureStore } from "./app/store/configureStore";
 //brring in configureStore method
+import ScrollToTop from "./app/common/util/ScrollToTop";
 
 const store = configureStore();
 
@@ -18,14 +19,16 @@ let render = () => {
   ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <ScrollToTop>
+          <App />
+        </ScrollToTop>
       </BrowserRouter>
     </Provider>,
 
     rootEl
   );
 };
-
+// childrenn of scroll to top is anything inside the element, this case is App the children is the App, so returning the App itself, the children of app will all fall into it.
 if (module.hot) {
   module.hot.accept("./app/layout/App", () => {
     setTimeout(render);
